@@ -1,0 +1,42 @@
+data:
+  raw_path: data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv
+  processed_path: data/processed/
+  target_col: Churn
+  id_col: customerID
+  test_size: 0.2
+  random_state: 42
+
+features:
+  numeric_cols:
+    - tenure
+    - MonthlyCharges
+    - TotalCharges
+  categorical_cols:
+    - gender
+    - Partner
+    - Dependents
+    - PhoneService
+    - MultipleLines
+    - InternetService
+    - OnlineSecurity
+    - OnlineBackup
+    - DeviceProtection
+    - TechSupport
+    - StreamingTV
+    - StreamingMovies
+    - Contract
+    - PaperlessBilling
+    - PaymentMethod
+
+model:
+  n_estimators: 500
+  max_depth: 6
+  learning_rate: 0.05
+  subsample: 0.8
+  colsample_bytree: 0.8
+  random_state: 42
+  eval_metric: logloss
+
+mlflow:
+  experiment_name: churn-prediction
+  model_name: churn-xgboost

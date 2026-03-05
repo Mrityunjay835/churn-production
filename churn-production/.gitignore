@@ -1,0 +1,33 @@
+# Virtual environment
+.venv/
+
+# Environment secrets
+.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# MLflow
+mlruns/
+
+# Artifacts / models
+artifacts/
+
+# Logs
+logs/
+
+# Jupyter
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# Data (raw data should never be in git)
+data/raw/
+data/processed/
+
+# OS
+.DS_Store
+Thumbs.db
