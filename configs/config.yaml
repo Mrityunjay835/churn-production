@@ -29,13 +29,17 @@ features:
     - PaymentMethod
 
 model:
-  n_estimators: 500
-  max_depth: 6
+  n_estimators: 300
+  max_depth: 4          # was 6 — reducing overfitting on small data
   learning_rate: 0.05
   subsample: 0.8
   colsample_bytree: 0.8
   random_state: 42
   eval_metric: logloss
+  min_child_weight: 5   # add this — prevents splits on tiny groups
+  gamma: 0.1            # add this — minimum loss reduction to split
+  reg_alpha: 0.1        # add this — L1 regularization
+  reg_lambda: 1.0       # add this — L2 regularization
 
 mlflow:
   experiment_name: churn-prediction
