@@ -16,6 +16,8 @@ from mlflow.models.signature import infer_signature
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 load_dotenv()
 
+from src.models.registry import register_model, promote_to_staging
+
 from src.data.loader import load_raw_data, basic_clean
 from src.data.validator import validate
 from src.features.engineer import create_domain_features
@@ -220,6 +222,15 @@ def main():
     )
 
     logger.info(f"Run ID: {run_id}")
+
+
+
+    # ── 8. Register and promote to Staging ───────────────
+    model_name = os.getenv("MLFLOW_MODEL_NAME", "churn-xgboost")
+    version = register_model(run_id, model_name)
+    promote_to_staging(model_name, version)
+
+    logger.info(f"Model '{model_name}' v{version} is in Staging ✓")
     logger.info("Day 1 complete ✓")
 
     return pipeline, metrics, cv_results, optimal_threshold
