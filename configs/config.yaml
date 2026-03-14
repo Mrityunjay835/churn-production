@@ -30,7 +30,7 @@ features:
 
 model:
   n_estimators: 300
-  max_depth: 4          # was 6 — reducing overfitting on small data
+  max_depth: 6          # was 6 — reducing overfitting on small data
   learning_rate: 0.05
   subsample: 0.8
   colsample_bytree: 0.8
