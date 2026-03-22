@@ -1,49 +1,46 @@
 name: CI Pipeline
 
-# ── Triggers ──────────────────────────────────────────────────────────────────
 on:
   push:
-    branches: [main, develop]    # run on every push to main or develop
+    branches: [main, develop]
   pull_request:
-    branches: [main]             # run on every PR targeting main
+    branches: [main]
 
-# ── Jobs ──────────────────────────────────────────────────────────────────────
 jobs:
-
-  # ── Job 1: Run Tests ─────────────────────────────────────────────────────────
   test:
     name: Run Tests
-    runs-on: ubuntu-latest       # GitHub provides this machine for free
+    runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Get your code onto the CI machine
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Install Python
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: "pip"           # cache pip downloads = faster builds
+          cache: "pip"
 
-      # Step 3: Install dependencies
       - name: Install dependencies
         run: |
           pip install --upgrade pip
           pip install setuptools==69.5.1
           pip install -r requirements.txt
 
-      # Step 4: Run code quality check
+      - name: Download dataset
+        run: |
+          mkdir -p data/raw
+          wget -q -O data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv \
+            "https://raw.githubusercontent.com/IBM/telco-customer-churn-on-icp4d/master/data/Telco-Customer-Churn.csv"
+          echo "Dataset downloaded: $(wc -l < data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv) lines"
+
       - name: Lint with ruff
         run: |
           pip install ruff
           ruff check src/ --ignore E501
 
-      # Step 5: Run tests
       - name: Run tests
         run: |
-          pip install pytest pytest-cov
           pytest tests/ -v --tb=short
         env:
           RAW_DATA_PATH: data/raw/WA_Fn-UseC_-Telco-Customer-Churn.csv
@@ -52,11 +49,10 @@ jobs:
           MLFLOW_MODEL_NAME: churn-xgboost
           ARTIFACTS_PATH: artifacts/
 
-  # ── Job 2: Build Docker Image ─────────────────────────────────────────────
   build:
     name: Build Docker Image
     runs-on: ubuntu-latest
-    needs: test                  # only runs if test job passes
+    needs: test
 
     steps:
       - name: Checkout code
