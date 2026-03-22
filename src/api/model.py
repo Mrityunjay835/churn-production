@@ -83,6 +83,7 @@ class ChurnModel:
         self.model_version = "local"
         logger.info(f"Loaded from local: {model_path}")
 
+
     def _load_threshold(self):
         """Load optimal threshold from file."""
         threshold_path = Path(
