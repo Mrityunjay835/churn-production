@@ -53,9 +53,8 @@ COPY main.py .
 # mlruns = MLflow registry (has your Staging model)
 # artifacts = threshold.txt + backup joblib
 # ─────────────────────────────────────────────
-COPY mlruns/ ./mlruns/
-COPY artifacts/ ./artifacts/
-
+# Create empty directories — populated at runtime via docker volumes
+RUN mkdir -p mlruns/ artifacts/ logs/
 # ─────────────────────────────────────────────
 # COPY: Environment config
 # We copy .env.example as .env
