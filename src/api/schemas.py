@@ -1,99 +1,81 @@
 from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional
 
-class ChurnRequest(BaseModel):
-    tenure: int = Field(
-        ge = 0,
-        le = 72,
-        description = "Months customer has been with company",
-        examples = 12
-    )
 
-    MonthlyCharges : float = Field(
-        ge = 0,
-        description = "Monthly bill amount in USD",
-        examples = 65.50
-    )
-    TotalCharges: float = Field(
-            ge=0,
-            description="Total amount charged to date",
-            example=786.0
-        )
-    Contract: str = Field(
-            description="Contract type",
-            example="Month-to-month"
-        )
-    PaymentMethod: str = Field(
-            description="Payment method",
-            example="Electronic check"
-        )
-    PaperlessBilling: str = Field(
-            description="Whether customer uses paperless billing",
-            example="Yes"
-        )
+class ChurnRequest(BaseModel):
+    # Account info
+    tenure: int = Field(ge=0, le=72)
+    MonthlyCharges: float = Field(ge=0)
+    TotalCharges: float = Field(ge=0)
+    Contract: str
+    PaymentMethod: str
+    PaperlessBilling: str
 
     # Demographics
-    gender: str = Field(example="Male")
-    SeniorCitizen: int = Field(ge=0, le=1, example=0)
-    Partner: str = Field(example="Yes")
-    Dependents: str = Field(example="No")
+    gender: str
+    SeniorCitizen: int = Field(ge=0, le=1)
+    Partner: str
+    Dependents: str
 
     # Phone services
-    PhoneService: str = Field(example="Yes")
-    MultipleLines: str = Field(example="No")
+    PhoneService: str
+    MultipleLines: str
 
     # Internet services
-    InternetService: str = Field(example="Fiber optic")
-    OnlineSecurity: str = Field(example="No")
-    OnlineBackup: str = Field(example="Yes")
-    DeviceProtection: str = Field(example="No")
-    TechSupport: str = Field(example="No")
-    StreamingTV: str = Field(example="No")
-    StreamingMovies: str = Field(example="No")
+    InternetService: str
+    OnlineSecurity: str
+    OnlineBackup: str
+    DeviceProtection: str
+    TechSupport: str
+    StreamingTV: str
+    StreamingMovies: str
 
-
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "tenure": 12,
+                "MonthlyCharges": 65.50,
+                "TotalCharges": 786.0,
+                "Contract": "Month-to-month",
+                "PaymentMethod": "Electronic check",
+                "PaperlessBilling": "Yes",
+                "gender": "Male",
+                "SeniorCitizen": 0,
+                "Partner": "Yes",
+                "Dependents": "No",
+                "PhoneService": "Yes",
+                "MultipleLines": "No",
+                "InternetService": "Fiber optic",
+                "OnlineSecurity": "No",
+                "OnlineBackup": "Yes",
+                "DeviceProtection": "No",
+                "TechSupport": "No",
+                "StreamingTV": "No",
+                "StreamingMovies": "No",
+            }
+        }
+    )
 
 
 class ChurnResponse(BaseModel):
-    """
-    Output schema for churn prediction.
-    Always return structured, typed responses — never raw dicts.
-    """
     model_config = ConfigDict(protected_namespaces=())
 
-    churn_probability: float = Field(
-        description="Probability of churn between 0 and 1",
-        example=0.73
-    )
-    churn_prediction: bool = Field(
-        description="True if predicted to churn",
-        example=True
-    )
-    risk_level: str = Field(
-        description="Human readable risk level",
-        example="HIGH"
-    )
-    threshold_used: float = Field(
-        description="Decision threshold applied",
-        example=0.33
-    )
-    model_version: str = Field(
-        description="MLflow model version used",
-        example="2"
-    )
+    churn_probability: float
+    churn_prediction: bool
+    risk_level: str
+    threshold_used: float
+    model_version: str
 
 
 class HealthResponse(BaseModel):
-    """Health check response."""
     model_config = ConfigDict(protected_namespaces=())
-    status: str = Field(example="ok")
-    model_loaded: bool = Field(example=True)
-    model_version: str = Field(example="2")
-    threshold: float = Field(example=0.33)
+
+    status: str
+    model_loaded: bool
+    model_version: str
+    threshold: float
 
 
 class ErrorResponse(BaseModel):
-    """Standard error response."""
-    model_config = ConfigDict(protected_namespaces=())
     error: str
     detail: Optional[str] = None
