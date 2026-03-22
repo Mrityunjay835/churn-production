@@ -16,13 +16,14 @@ services:
                mlflow ui
                --backend-store-uri /app/mlruns
                --host 0.0.0.0
-               --port 5000"
+               --port 5000
+               --gunicorn-opts '--bind 0.0.0.0:5000'"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000"]
       interval: 30s
       timeout: 10s
-      retries: 3
-      start_period: 20s
+      retries: 5
+      start_period: 60s
 
   # ── Service 2: Churn Prediction API ────────────────────────────────────────
   api:
@@ -39,8 +40,7 @@ services:
       - ARTIFACTS_PATH=artifacts/
       - LOG_LEVEL=INFO
     depends_on:
-      mlflow:
-        condition: service_healthy
+      - mlflow                    # ← removed condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 30s
