@@ -1,4 +1,3 @@
-import os
 import yaml
 from dotenv import load_dotenv
 from src.utils.logger import get_logger

@@ -2,7 +2,6 @@ import os
 import joblib
 import mlflow
 import mlflow.sklearn
-import numpy as np
 import pandas as pd
 from pathlib import Path
 from dotenv import load_dotenv

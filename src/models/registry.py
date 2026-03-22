@@ -18,8 +18,6 @@ def register_model(run_id: str, model_name: str) -> str:
     Register model from a run into the Model Registry.
     Returns the version number.
     """
-    client = get_client()
-
     model_uri = f"runs:/{run_id}/model"
 
     logger.info(f"Registering model '{model_name}' from run {run_id}")

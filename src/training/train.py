@@ -1,8 +1,13 @@
+# ── Standard library (no path needed) ────────────────────────────────────────
 import os
 import sys
 import joblib
-import pandas as pd
 from pathlib import Path
+
+# ── Path fix MUST happen before any src imports ───────────────────────────────
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+# ── Third party ───────────────────────────────────────────────────────────────
 from dotenv import load_dotenv
 from sklearn.model_selection import (
     train_test_split,
@@ -13,25 +18,23 @@ import mlflow
 import mlflow.sklearn
 from mlflow.models.signature import infer_signature
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 load_dotenv()
 
-from src.models.registry import register_model, promote_to_staging
-
-from src.data.loader import load_raw_data, basic_clean
-from src.data.validator import validate
-from src.features.engineer import create_domain_features
-from src.models.pipeline import build_pipeline
-from src.models.evaluator import (
+# ── Local imports (src/) ──────────────────────────────────────────────────────
+from src.models.registry import register_model, promote_to_staging  # noqa: E402
+from src.data.loader import load_raw_data, basic_clean  # noqa: E402
+from src.data.validator import validate  # noqa: E402
+from src.features.engineer import create_domain_features  # noqa: E402
+from src.models.pipeline import build_pipeline  # noqa: E402
+from src.models.evaluator import (  # noqa: E402
     find_optimal_threshold,
     evaluate_model,
     compare_thresholds,
 )
-from src.utils.config import load_config
-from src.utils.logger import get_logger
+from src.utils.config import load_config  # noqa: E402
+from src.utils.logger import get_logger  # noqa: E402
 
 logger = get_logger(__name__, log_file="logs/training.log")
-
 
 def run_cross_validation(pipeline, X_train, y_train) -> dict:
     logger.info("Running 5-fold stratified cross validation...")

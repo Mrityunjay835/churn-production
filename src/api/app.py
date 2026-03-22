@@ -1,10 +1,9 @@
-import os
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 
-from src.api.schemas import ChurnRequest, ChurnResponse, HealthResponse, ErrorResponse
+from src.api.schemas import ChurnRequest, ChurnResponse, HealthResponse
 from src.api.model import churn_model
 from src.utils.logger import get_logger
 
