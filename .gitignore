@@ -1,33 +1,47 @@
-# Virtual environment
+# ── Python ───────────────────────────────────────
 .venv/
-
-# Environment secrets
-.env
-
-# Python cache
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .Python
+*.egg-info/
+dist/
+build/
 
-# MLflow
+# ── Environment secrets ───────────────────────────
+.env
+# .env.example is NOT ignored — it's safe to commit
+
+# ── MLflow ───────────────────────────────────────
 mlruns/
 
-# Artifacts / models
+# ── Model artifacts ───────────────────────────────
 artifacts/
 
-# Logs
+# ── Logs ─────────────────────────────────────────
 logs/
 
-# Jupyter
+# ── Jupyter ──────────────────────────────────────
 .ipynb_checkpoints/
 notebooks/.ipynb_checkpoints/
 
-# Data (raw data should never be in git)
+# ── Data ─────────────────────────────────────────
 data/raw/
 data/processed/
 
-# OS
+# ── Docker ───────────────────────────────────────
+# .dockerignore is safe to commit
+# docker-compose.override.yml has local overrides
+docker-compose.override.yml
+
+# ── OS ───────────────────────────────────────────
 .DS_Store
 Thumbs.db
+.idea/
+.vscode/settings.json
+
+# ── Testing ──────────────────────────────────────
+.coverage
+htmlcov/
+.pytest_cache/
